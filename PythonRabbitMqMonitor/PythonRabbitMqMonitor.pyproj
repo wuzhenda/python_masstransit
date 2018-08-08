@@ -4,13 +4,15 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4d8bb252-0b49-405d-a9a6-a8169ad4748f</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PythonRabbitMqMonitor.py</StartupFile>
+    <StartupFile>PubRabbitMqClient.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>PythonRabbitMqMonitor</Name>
     <RootNamespace>PythonRabbitMqMonitor</RootNamespace>
+    <InterpreterId>
+    </InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +23,8 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="SubRabbitMqClient.py" />
+    <Compile Include="PubRabbitMqClient.py" />
     <Compile Include="PythonRabbitMqMonitor.py" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

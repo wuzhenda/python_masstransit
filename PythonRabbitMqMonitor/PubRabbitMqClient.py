@@ -10,6 +10,15 @@ import csv
 import os
 import datetime
 from apscheduler.schedulers.blocking import BlockingScheduler
+import json
+import pickle
+
+
+class MsgEvent:
+    def __init__(self,EvCode,ElevatorID,MsgBody):
+        self.EvCode = EvCode
+        self.ElevatorID = ElevatorID
+        self.MsgBody = MsgBody
 
 
 class RabbitMQ:
@@ -34,21 +43,22 @@ class RabbitMQ:
         else:
             return self.channel
 
-    def ExecQuery(self):
+    def SendEvent(self):
         """
         执行查询语句
         返回的是一个包含tuple的list，list的元素是记录行，tuple的元素是每行记录的字段
 
         调用示例：
         """
+        msgEvent=MsgEvent(0x06,'0000000000000002','1')
+        bodyMsg = pickle.dumps(msgEvent)
+        print(bodyMsg)
         channel = self.__GetConnect()
-        agent_queue = channel.queue_declare(queue="DTrms.AgentQueue", durable=True,exclusive=False, auto_delete=False)
-        consumer_queue = channel.queue_declare(queue="DTrms.ConsumerQueue", durable=True,exclusive=False, auto_delete=False,arguments={'x-max-priority':3})        
-        event_queue = channel.queue_declare(queue="DTrms.EventConsumerQueue", durable=True,exclusive=False, auto_delete=False)
-        queue_st="{0},{1},{2}".format(agent_queue.method.message_count,consumer_queue.method.message_count,event_queue.method.message_count)
-        print(queue_st)
-        ret=[datetime.datetime.now(),agent_queue.method.message_count,consumer_queue.method.message_count,event_queue.method.message_count]
-        return ret
+        channel.basic_publish(exchange='DTrms.Protocol.Messaging:MsgEvent',routing_key='',body=bodyMsg,properties=pika.BasicProperties(
+                                content_type = "text/plain"
+                                ))
+        print(msgEvent)
+        channel.close()
 
     def ToCVSFile(self,cvsFilename,dblist):
         """
@@ -57,13 +67,13 @@ class RabbitMQ:
         with open(cvsFilename, 'a',encoding='utf8',newline='') as f:
             writer = csv.writer(f)
             writer.writerow(dblist)           
-                
+
+
 def quiryDbJob():
     print('Tick! The time is: %s' % datetime.datetime.now())
     ramq = RabbitMQ(host='10.0.0.155',user="inner_test",pwd="123456",vhost="innertest")
-    resList = ramq.ExecQuery()
-    ramq.ToCVSFile("queueSt.csv",resList)
-    
+    ramq.SendEvent()
+        
 
 def main():
     scheduler = BlockingScheduler()
