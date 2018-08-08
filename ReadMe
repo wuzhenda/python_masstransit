@@ -1,0 +1,38 @@
+try to use python to connumicate masstranist in dotnet with rabbitmq,I got to know there were still a lot work to do if construct or destruct the msg body.
+
+printed the msg:
+b'{
+"messageId": "af7c0000-80a9-94de-2a80-08d5fcee8660",
+"conversationId": "af7c0000-80a9-94de-c839-08d5fcee7120",
+"sourceAddress": "rabbitmq://10.0.0.155/innertest/DTrms.EventConsumerQueue",
+"destinationAddress": "rabbitmq://10.0.0.155/innertest/DTrms.Protocol.Messaging:MsgEvent",
+"messageType": ["urn:message:DTrms.Protocol.Messaging:MsgEvent"],
+"message": {
+"evCode": 3,
+"elevatorID": "0000000000000002",
+"msgBody": "{\\"ClientIp\\":\\"10.0.2.47\\",\\"ClientPort\\":61481,\\"AgentServerQueueName\\":\\"DTrms.AgentQueue\\",\\"AgentServerIp\\":\\"10.0.0.153\\",\\"AgentServerPort\\":87,\\"ActiveTime\\":\\"2018-08-08T13:19:27.9737806+08:00\\"}"
+},
+"headers": {
+"RetryTimes": 1
+},
+"host": {
+"machineName": "IOT-WEB",
+"processName": "DTrms.HubConsumer",
+"processId":7300,
+"assembly": "DTrms.HubConsumer",
+"assemblyVersion": "1.0.0.0",
+"frameworkVersion": "4.0.30319.42000",
+"massTransitVersion": "3.5.7.1082",
+"operatingSystemVersion": "Microsoft Windows NT 6.1.7601 Service Pack 1"
+}
+}'
+
+
+
+
+refs
+
+https://stackoverflow.com/questions/21385143/comsuming-masstransit-from-python-or-other-languages
+
+https://pika.readthedocs.io/en/0.11.0/examples/blocking_consumer_generator.html
+
